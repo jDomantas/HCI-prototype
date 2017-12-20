@@ -1,5 +1,5 @@
 module Editor exposing
-  ( Model, Msg, View(Home, AddingProduct, SelectingShop)
+  ( Model, Msg, View(Home, AddingProduct, SelectingShop, ViewingMap)
   , freshEditor, listEditor, intoList, update, view, goToView
   )
 
@@ -14,6 +14,7 @@ import Models exposing
   )
 import ProductSelect
 import ShopSelect
+import Map
 import ListUtils
 
 
@@ -21,12 +22,14 @@ type Subscreen
   = None
   | AddProduct ProductSelect.Model
   | SelectShop ShopSelect.Model
+  | ShopMap Map.Model
 
 
 type View
   = Home
   | AddingProduct
   | SelectingShop
+  | ViewingMap
 
 
 type Msg
@@ -34,6 +37,7 @@ type Msg
   | SetTitle String
   | AddItem
   | OpenShopSelect
+  | OpenShopMap
   | Select ProductSelect.Msg
   | ShopUpdate ShopSelect.Msg
   | AddNewItem Product
@@ -87,6 +91,16 @@ update msg model =
       | subscreen = SelectShop (ShopSelect.init model.list)
       } ! [ Navigation.newUrl "#selectshop" ]
 
+    OpenShopMap ->
+      case model.list.shop of
+        Just shop ->
+          { model
+          | subscreen = ShopMap (Map.init model.list shop)
+          } ! [ Navigation.newUrl "#map" ]
+        
+        Nothing ->
+          model ! []
+
     Select msg ->
       case model.subscreen of
         AddProduct submodel ->
@@ -131,9 +145,20 @@ update msg model =
           }
 
         updated = ListUtils.updateAt index update model.list.products
+
+        newList = let l = model.list in { l | products = updated }
+
+        newSubscreen =
+          case model.subscreen of
+            ShopMap model ->
+              ShopMap { model | list = newList }
+
+            other ->
+              other
       in
         { model
-        | list = let l = model.list in { l | products = updated }
+        | list = newList
+        , subscreen = newSubscreen
         } ! []
 
     RemoveItem index ->
@@ -156,25 +181,41 @@ goToView view model =
     SelectingShop ->
       model
 
+    ViewingMap ->
+      model
 
-view : Model -> Html Msg
-view model =
+
+view : a -> (Msg -> a) -> Model -> Html a
+view removeMsg makeInternal model =
   case model.subscreen of
     None ->
       Html.div
         [ Attr.class "editor" ]
-        ([ viewTitle model.list.title
-        , Html.div
-          [ Attr.class "editorItemList" ]
-          (List.indexedMap (viewItem model) model.list.products)
-        , newItemButton
-        ] ++ viewShop model)
+        (List.map (Html.map makeInternal)
+          ([ viewTitle model.list.title
+          , Html.div
+            [ Attr.class "editorItemList" ]
+            (List.indexedMap (viewItem model) model.list.products)
+          , newItemButton
+          ] ++ (viewShop model)) ++
+        [ Html.button
+          [ Attr.class "removeList"
+          , Events.onClick removeMsg
+          ]
+          [ Html.text "Remove list" ]
+        ])
 
     AddProduct model ->
       ProductSelect.view AddNewItem Select model
+      |> Html.map makeInternal
 
     SelectShop model ->
       ShopSelect.view ChangeShop ShopUpdate model
+      |> Html.map makeInternal
+
+    ShopMap model ->
+      Map.view ToggleItem model
+      |> Html.map makeInternal
 
 
 viewTitle : String -> Html Msg
@@ -240,6 +281,11 @@ viewShop model =
         , Events.onClick OpenShopSelect
         ]
         [ Html.text "Change shop" ]
+      , Html.button
+        [ Attr.class "shopPlanButton"
+        , Events.onClick OpenShopMap
+        ]
+        [ Html.text "Open shop plan" ]
       ]
     
     Nothing ->

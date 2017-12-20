@@ -21,6 +21,7 @@ type Msg
   | NewList
   | OpenList Models.ShoppingList Int
   | ChangeUrl Location
+  | RemoveList Int
 
 
 type View
@@ -85,6 +86,12 @@ update msg model =
     ChangeUrl newLocation ->
       goToView (parseView newLocation) model ! []
 
+    RemoveList index ->
+      { model
+      | editor = Nothing
+      , lists = ListUtils.removeAt index model.lists
+      } ! [ Navigation.back 1 ]
+
 
 goToView : View -> Model -> Model
 goToView view model =
@@ -122,8 +129,8 @@ goToView view model =
 view : Model -> Html Msg
 view model =
   case model.editor of
-    Just (editor, _) ->
-      Editor.view editor |> Html.map EditorMsg
+    Just (editor, index) ->
+      Editor.view (RemoveList index) EditorMsg editor
 
     Nothing ->
       viewMainScreen model
@@ -150,4 +157,5 @@ parseView location =
     "#editor" -> Editor Editor.Home
     "#additem" -> Editor Editor.AddingProduct
     "#selectshop" -> Editor Editor.SelectingShop
+    "#map" -> Editor Editor.ViewingMap
     _ -> Debug.crash "bad url"

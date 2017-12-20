@@ -2,6 +2,8 @@
 *.pdf
 # Build artifacts
 out/
+# hack
+src/resources
 
 # Created by https://www.gitignore.io/api/elm,windows,visualstudiocode
 
