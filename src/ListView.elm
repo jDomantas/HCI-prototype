@@ -27,11 +27,11 @@ listItem product =
   let
     classes =
       if product.taken then
-        [ Attr.class "listPreviewItem" ]
-      else
         [ Attr.class "listPreviewItem"
         , Attr.class "strikeout"
         ]
+      else
+        [ Attr.class "listPreviewItem" ]
   in
     Html.div
       classes

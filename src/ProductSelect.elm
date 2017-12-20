@@ -62,7 +62,7 @@ previewProduct model product =
       [ Attr.class "addProduct"
       , Events.onClick product
       ]
-      []
+      [ Html.text "+" ]
     ]
 
 

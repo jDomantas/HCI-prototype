@@ -13,7 +13,7 @@ body {
     background-color: #f2f2f2;
     font-family: "Segoe UI";
     color: #111;
-    font-size: 2.5em;
+    font-size: 2em;
 }
 
 * {
@@ -28,24 +28,31 @@ p {
     margin: 0;
 }
 
+.strikeout p {
+    text-decoration: line-through;
+}
+
 .editorTitle,
 .productSelectInput,
 .shopSelectInput,
 button.newListButton,
 button.addItem,
-button.selectShopButton {
+button.selectShopButton,
+button.removeList,
+button.shopPlanButton {
     margin-top: 0.5em;
     width: 100%;
 }
 
 .listPreview {
     width: 100%;
-    border: 1px solid black;
+    border: 1px solid gray;
     margin-top: 0.5em;
 }
 
 .listPreviewHeader {
     text-align: center;
+    text-decoration: underline;
 }
 
 .productSelectPreview, .productView {
@@ -98,7 +105,23 @@ button.addProduct {
 }
 
 .productView {
-    grid-template-columns: 3em auto;
+    grid-template-columns: 3em auto 3em 3em;
+}
+
+input.toggleTaken {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    width: 2em;
+    height: 2em;
+    margin: 0.5em;
+}
+
+button.removeItem {
+    grid-column: 4;
+    grid-row: 1 / 3;
+    width: 2em;
+    height: 2em;
+    margin: 0.5em;
 }
 
 .shopName {
@@ -111,6 +134,11 @@ button.addProduct {
     grid-column: 2;
     grid-row: 2;
     margin-left: 0.1em;
+}
+
+.shopCost {
+    grid-column: 2;
+    grid-row: 3;
 }
 
 button.pickShop {
@@ -130,4 +158,53 @@ button.pickShop {
 .listPreviewItem {
     margin-left: 0.3em;
     margin-right: 0.3em;
+}
+
+.listPreviewEnd {
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+}
+
+.shopSelectPreview,
+.productView,
+.productSelectPreview,
+.listPreview {
+    background-color: #e9e9e9;
+}
+
+button.addProduct,
+button.pickShop {
+    background-color: rgb(132, 197, 132);
+    border: 1px solid rgb(132, 197, 132);
+    color: white;
+    font: 200%;
+}
+
+button.removeItem {
+    background-color: rgb(197, 132, 132);
+    border: 1px solid rgb(197, 132, 132);
+    color: white;
+    font: 200%;
+}
+
+button.newListButton,
+button.addItem,
+button.selectShopButton,
+button.removeList,
+button.shopPlanButton {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    background: #fafafa;
+    background-image: -webkit-linear-gradient(top, #fafafa, #f0f0f0);
+    background-image: -moz-linear-gradient(top, #fafafa, #f0f0f0);
+    background-image: -ms-linear-gradient(top, #fafafa, #f0f0f0);
+    background-image: -o-linear-gradient(top, #fafafa, #f0f0f0);
+    background-image: linear-gradient(to bottom, #fafafa, #f0f0f0);
+    border-radius: 0.2em;
+}
+
+input.editorTitle,
+input.productSelectInput,
+input.shopSelectInput {
+    padding: 0.2em;
 }

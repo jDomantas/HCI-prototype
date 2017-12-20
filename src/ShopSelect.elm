@@ -76,7 +76,7 @@ previewShop list shop =
       [ Attr.class "pickShop"
       , Events.onClick shop
       ]
-      []
+      [ Html.text "+" ]
     ]
 
 

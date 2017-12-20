@@ -258,7 +258,7 @@ viewItem model index product =
         [ Attr.class "removeItem"
         , Events.onClick (RemoveItem index)
         ]
-        []
+        [ Html.text "x" ]
       ]
 
 
