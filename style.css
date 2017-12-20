@@ -116,6 +116,15 @@ input.toggleTaken {
     margin: 0.5em;
 }
 
+.productIcon {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 2.5em;
+    height: 2.5em;
+    margin: 0.25em;
+    border: 1px solid gray;
+}
+
 button.removeItem {
     grid-column: 4;
     grid-row: 1 / 3;
@@ -139,6 +148,15 @@ button.removeItem {
 .shopCost {
     grid-column: 2;
     grid-row: 3;
+}
+
+.shopIcon {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    width: 2.5em;
+    height: 2.5em;
+    margin: 0.25em;
+    border: 1px solid gray;
 }
 
 button.pickShop {

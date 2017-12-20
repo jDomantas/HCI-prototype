@@ -38,13 +38,14 @@ type alias ProductInfo =
 type alias Shop =
   { name : String
   , address : String
+  , icon : String
   , products : Dict String ProductInfo
   }
 
 
 emptyList : ShoppingList
 emptyList =
-  { title = "New list"
+  { title = "Sąrašas"
   , products = []
   , shop = Nothing
   }
@@ -52,10 +53,21 @@ emptyList =
 
 formatPriceRange : (Float, Float) -> String
 formatPriceRange (from, to) =
-  if from == to then
-    toString from ++ " Eur"
-  else
-    toString from ++ " - " ++ toString to ++ " Eur"
+  let
+    pad : Int -> String
+    pad num =
+      if num < 10 then
+        "0" ++ toString num
+      else
+        toString num
+
+    formatNum : Float -> String
+    formatNum x = toString (floor x) ++ "." ++ pad (floor (x * 100) % 100)
+  in
+    if from == to then
+      formatNum from ++ " Eur"
+    else
+      formatNum from ++ " - " ++ formatNum to ++ " Eur"
 
 
 viewProductPrice : { a | name : String, priceRange : (Float, Float) } -> Maybe Shop -> String
@@ -99,17 +111,6 @@ calculateShopCost shop list =
     List.foldl add (Price 0) list.products
 
 
-rawProducts : List { name : String, icon : String}
-rawProducts =
-  [ { name = "Thing"
-    , icon = ""
-    }
-  , { name = "Another"
-    , icon = ""
-    }
-  ]
-
-
 products : List Product
 products =
   rawProducts
@@ -147,29 +148,49 @@ productDict =
   |> Dict.fromList
 
 
+rawProducts : List { name : String, icon : String}
+rawProducts =
+  [ { name = "Juoda duona"
+    , icon = "https://dtgxwmigmg3gc.cloudfront.net/files/5265dd0ec566d72651002d43-icon-256x256.png"
+    }
+  , { name = "Batonas"
+    , icon = "https://d1u5p3l4wpay3k.cloudfront.net/arksurvivalevolved_gamepedia/9/9f/Baked_Bread_Loaf_%28Primitive_Plus%29.png"
+    }
+  , { name = "Tuoletinis popierius"
+    , icon = "http://icons.iconarchive.com/icons/rade8/body-care/128/toilet-paper-icon.png"
+    }
+  , { name = "Glock"
+    , icon = "https://vignette.wikia.nocookie.net/dayzeromod/images/e/e9/Glock_17.png/revision/latest?cb=20130907173734"
+    }
+  ]
+
+
 shops : List Shop
 shops =
   let
-    makeProduct : { name : String, price : Float } -> (String, ProductInfo)
-    makeProduct { name, price } =
+    makeProduct { name, price, at } =
       ( name
       , { price = price
-        , position = (0, 0)
+        , position = at
         }
       )
 
-    makeShop : String -> String -> List { name : String, price : Float } -> Shop
-    makeShop name address products =
+    makeShop name address icon products =
       { name = name
       , address = address
+      , icon = icon
       , products = Dict.fromList (List.map makeProduct products)
       }
   in
-    [ makeShop "Mindaugo maxima" "Mindaugo g. 11"
-      [ { name = "Thing", price = 1.5 }
-      , { name = "Another", price = 2.3 }
+    [ makeShop "Mindaugo maxima" "Mindaugo g. 11" "https://www.maxima.lt/images/front/logos/maxima_logo.png"
+      [ { name = "Juoda duona", price = 1, at = (150, 150) }
+      , { name = "Batonas", price = 5.3, at = (200, 150) }
+      , { name = "Tuoletinis popierius", price = 100, at = (300, 350) }
       ]
-    , makeShop "Didlaukio IKI" "Didlaukio g. 80A"
-      [ { name = "Another", price = 1.8 }
+    , makeShop "Didlaukio IKI" "Didlaukio g. 80A" "https://www.iki.lt/apple-touch-icon.png"
+      [ { name = "Juoda duona", price = 1.1, at = (150, 350) }
+      , { name = "Batonas", price = 4.5, at = (200, 350) }
+      , { name = "Tuoletinis popierius", price = 1.5, at = (310, 550) }
+      , { name = "Glock", price = 0.35, at = (150, 610) }
       ]
     ]

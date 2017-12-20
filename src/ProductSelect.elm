@@ -63,6 +63,11 @@ previewProduct model product =
       , Events.onClick product
       ]
       [ Html.text "+" ]
+    , Html.img
+      [ Attr.class "productIcon"
+      , Attr.src product.icon
+      ]
+      []
     ]
 
 

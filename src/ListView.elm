@@ -56,4 +56,4 @@ shortenedListHint : Int -> Html a
 shortenedListHint amount =
   Html.div
     [ Attr.class "listPreviewEnd" ]
-    [ Html.p [] [ Html.text (toString amount ++ " more") ] ]
+    [ Html.p [] [ Html.text <| "... (" ++ toString amount ++ " paslėptos)" ] ]

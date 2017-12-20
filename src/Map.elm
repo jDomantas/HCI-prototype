@@ -5,6 +5,7 @@ import Html exposing (Html)
 import Svg exposing (Svg)
 import Svg.Attributes as Attr
 import Svg.Events as Events
+import VirtualDom
 import Models exposing (ListProduct, Shop, ShoppingList)
 
 
@@ -44,11 +45,12 @@ viewItem click shop product =
   case (product.taken, Dict.get product.name shop.products) of
     (False, Just info) ->
       Just <|
-        Svg.rect
-          [ Attr.x <| toString <| Tuple.first info.position - 15
-          , Attr.y <| toString <| Tuple.second info.position - 15
-          , Attr.width "30"
-          , Attr.height "30"
+        Svg.image
+          [ Attr.x <| toString <| Tuple.first info.position - 20
+          , Attr.y <| toString <| Tuple.second info.position - 20
+          , Attr.width "40"
+          , Attr.height "40"
+          , Attr.xlinkHref product.icon
           , Events.onClick click
           ]
           []

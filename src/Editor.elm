@@ -202,7 +202,7 @@ view removeMsg makeInternal model =
           [ Attr.class "removeList"
           , Events.onClick removeMsg
           ]
-          [ Html.text "Remove list" ]
+          [ Html.text "Ištrinti sąrašą" ]
         ])
 
     AddProduct model ->
@@ -259,6 +259,11 @@ viewItem model index product =
         , Events.onClick (RemoveItem index)
         ]
         [ Html.text "x" ]
+      , Html.img
+        [ Attr.class "productIcon"
+        , Attr.src product.icon
+        ]
+        []
       ]
 
 
@@ -268,7 +273,7 @@ newItemButton =
     [ Attr.class "addItem"
     , Events.onClick AddItem
     ]
-    [ Html.text "Add Item" ]
+    [ Html.text "Pridėti prekę" ]
 
 
 viewShop : Model -> List (Html Msg)
@@ -280,12 +285,12 @@ viewShop model =
         [ Attr.class "selectShopButton"
         , Events.onClick OpenShopSelect
         ]
-        [ Html.text "Change shop" ]
+        [ Html.text "Keisti parduotuvę" ]
       , Html.button
         [ Attr.class "shopPlanButton"
         , Events.onClick OpenShopMap
         ]
-        [ Html.text "Open shop plan" ]
+        [ Html.text "Parduotuvės planas" ]
       ]
     
     Nothing ->
@@ -293,7 +298,7 @@ viewShop model =
         [ Attr.class "selectShopButton"
         , Events.onClick OpenShopSelect
         ]
-        [ Html.text "Select shop" ]
+        [ Html.text "Rintis parduotuvę" ]
       ]
 
 
@@ -309,7 +314,12 @@ previewShop list shop =
       [ Html.p [] [ Html.text shop.address ] ]
     , Html.div
       [ Attr.class "shopCost" ]
-      [ Html.p [] [ Html.text <| displayCost <| calculateShopCost shop list]]
+      [ Html.p [] [ Html.text <| displayCost <| calculateShopCost shop list] ]
+    , Html.img
+      [ Attr.class "shopIcon"
+      , Attr.src shop.icon
+      ]
+      []
     ]
 
 
@@ -317,10 +327,10 @@ displayCost : Models.ShopCost -> String
 displayCost cost =
   case cost of
     Models.Price price ->
-      "Total price: " ++ toString price ++ " Eur"
+      "Bendra kaina: " ++ formatPriceRange (price, price)
 
     Models.Missing amount ->
       if amount % 10 == 1 && amount % 100 /= 11 then
-        toString amount ++ " item missing"
+        "Neturi " ++ toString amount ++ " prekės"
       else
-        toString amount ++ " items missing"
+        "Neturi " ++ toString amount ++ " prekių"

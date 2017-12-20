@@ -146,7 +146,7 @@ viewMainScreen model =
       [ Attr.class "newListButton"
       , Events.onClick NewList
       ]
-      [ Html.text "New List" ]
+      [ Html.text "Naujas sąrašas" ]
     ]
 
 

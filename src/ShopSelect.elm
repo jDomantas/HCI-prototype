@@ -5,7 +5,7 @@ import Html.Attributes as Attr
 import Html.Events as Events
 import Models exposing
   ( Shop, ShoppingList
-  , calculateShopCost
+  , calculateShopCost, formatPriceRange
   )
 
 
@@ -49,7 +49,7 @@ view makeAdd makeInternal model =
       |> List.map (previewShop model.list >> Html.map makeAdd))
     , Html.div
       [ Attr.class "suggestedShopsTitle" ]
-      [ Html.p [] [ Html.text "Suggested shops" ] ]
+      [ Html.p [] [ Html.text "Siūlomos parduotuvės" ] ]
     , Html.div
       [ Attr.class "shopSelectList"
       , Attr.class "suggestedShopList"
@@ -77,6 +77,11 @@ previewShop list shop =
       , Events.onClick shop
       ]
       [ Html.text "+" ]
+    , Html.img
+      [ Attr.class "shopIcon"
+      , Attr.src shop.icon
+      ]
+      []
     ]
 
 
@@ -107,10 +112,10 @@ displayCost : Models.ShopCost -> String
 displayCost cost =
   case cost of
     Models.Price price ->
-      "Total price: " ++ toString price ++ " Eur"
+      "Bendra kaina: " ++ formatPriceRange (price, price)
 
     Models.Missing amount ->
       if amount % 10 == 1 && amount % 100 /= 11 then
-        toString amount ++ " item missing"
+        "Neturi " ++ toString amount ++ " prekės"
       else
-        toString amount ++ " items missing"
+        "Neturi " ++ toString amount ++ " prekių"
