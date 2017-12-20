@@ -1,4 +1,4 @@
-module ListUtils exposing (placeAt, updateAt)
+module ListUtils exposing (placeAt, updateAt, removeAt)
 
 
 placeAt : Int -> a -> List a -> List a
@@ -28,3 +28,16 @@ updateAt index f list =
 
     (a, x :: xs) ->
       x :: updateAt (a - 1) f xs
+
+
+removeAt : Int -> List a -> List a
+removeAt index list =
+  case (index, list) of
+    (0, x :: xs) ->
+      xs
+
+    (_, []) ->
+      []
+
+    (a, x :: xs) ->
+      x :: removeAt (a - 1) xs

@@ -39,6 +39,7 @@ type Msg
   | AddNewItem Product
   | ChangeShop Shop
   | ToggleItem Int
+  | RemoveItem Int
 
 
 type alias Model =
@@ -56,8 +57,8 @@ freshEditor =
 
 listEditor : ShoppingList -> Model
 listEditor list =
-  { list = list
-  , subscreen = None
+  { freshEditor
+  | list = list
   }
 
 
@@ -135,6 +136,11 @@ update msg model =
         | list = let l = model.list in { l | products = updated }
         } ! []
 
+    RemoveItem index ->
+      { model
+      | list = let l = model.list in { l | products = ListUtils.removeAt index l.products }
+      } ! []
+
 
 goToView : View -> Model -> Model
 goToView view model =
@@ -205,6 +211,11 @@ viewItem model index product =
         , Attr.class "toggleTaken"
         , Attr.checked product.taken
         , Events.onCheck (always (ToggleItem index))
+        ]
+        []
+      , Html.button
+        [ Attr.class "removeItem"
+        , Events.onClick (RemoveItem index)
         ]
         []
       ]
