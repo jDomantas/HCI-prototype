@@ -182,7 +182,11 @@ shops =
       , products = Dict.fromList (List.map makeProduct products)
       }
   in
-    [ makeShop "Mindaugo maxima" "Mindaugo g. 11" "https://www.maxima.lt/images/front/logos/maxima_logo.png"
+    [ makeShop "Stoties IKI" "Sodų g. 22" "https://www.iki.lt/apple-touch-icon.png"
+      [ { name = "Juoda duona", price = 1, at = (150, 150) }
+      , { name = "Tuoletinis popierius", price = 1.5, at = (310, 550) }
+      ]
+    , makeShop "Mindaugo maxima" "Mindaugo g. 11" "https://www.maxima.lt/images/front/logos/maxima_logo.png"
       [ { name = "Juoda duona", price = 1, at = (150, 150) }
       , { name = "Batonas", price = 5.3, at = (200, 150) }
       , { name = "Tuoletinis popierius", price = 100, at = (300, 350) }

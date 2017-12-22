@@ -95,7 +95,7 @@ selectViewedShops input =
 
 selectSuggestedShops : String -> List Shop
 selectSuggestedShops input =
-  List.take 2 Models.shops
+  List.take 1 Models.shops
 
 
 shouldTakeShop : String -> Shop -> Bool
